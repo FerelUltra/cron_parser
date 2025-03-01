@@ -12,46 +12,40 @@ type time_type struct {
 	max_value   int
 }
 
-func returnSpaceJoinedString(slice []string) string {
-	return strings.Join(slice, " ")
-}
-
 func parsePart(part string, start_value, max_value int) string {
-	result_slice := []string{}
+	values := []string{}
 	if part == "*" {
 		for i := start_value; i <= max_value; i++ {
-			result_slice = append(result_slice, strconv.Itoa(i))
+			values = append(values, strconv.Itoa(i))
 		}
-		return returnSpaceJoinedString(result_slice)
+		return strings.Join(values, " ")
 	}
 	if strings.Contains(part, ",") {
-		result_slice := []string{}
 		comma_splits := strings.Split(part, ",")
 		for _, comma_split := range comma_splits {
-			result_slice = append(result_slice, comma_split)
+			values = append(values, comma_split)
 		}
-		return returnSpaceJoinedString(result_slice)
+		return strings.Join(values, " ")
 	}
 	if strings.Contains(part, "-") {
-		result_slice := []string{}
 		hyphen_splits := strings.Split(part, "-")
 		start_value, _ := strconv.Atoi(hyphen_splits[0])
 		end_value, _ := strconv.Atoi(hyphen_splits[1])
 		for i := start_value; i <= end_value; i++ {
-			result_slice = append(result_slice, strconv.Itoa(i))
+			values = append(values, strconv.Itoa(i))
 		}
-		return returnSpaceJoinedString(result_slice)
+		return strings.Join(values, " ")
 	}
 	if strings.Contains(part, "/") {
-		result_slice := []string{}
 		next_value := start_value
 		slash_value := strings.Split(part, "/")[1]
 		int_slash_value, _ := strconv.Atoi(slash_value)
 		for ; next_value <= max_value; next_value += int_slash_value {
-			result_slice = append(result_slice, strconv.Itoa(next_value))
+			values = append(values, strconv.Itoa(next_value))
 		}
-		return returnSpaceJoinedString(result_slice)
+		return strings.Join(values, " ")
 	}
+	// if just one value
 	return part
 }
 
