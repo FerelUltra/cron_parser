@@ -19,7 +19,12 @@ func TestParsePart(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		result := parsePart(tt.part, tt.start, tt.max)
+		result, err := parsePart(tt.part, tt.start, tt.max)
+		if err != nil {
+			t.Errorf("parsePart(%q, %d, %d) returned error: %v", tt.part, tt.start, tt.max, err)
+			continue
+		}
+
 		if strings.TrimSpace(result) != tt.expected {
 			t.Errorf("parsePart(%q, %d, %d) = %q, want %q",
 				tt.part, tt.start, tt.max, result, tt.expected)
