@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"strconv"
 	"strings"
 )
@@ -29,8 +30,15 @@ func parsePart(part string, start_value, max_value int) string {
 	}
 	if strings.Contains(part, "-") {
 		hyphen_splits := strings.Split(part, "-")
-		start_value, _ := strconv.Atoi(hyphen_splits[0])
-		end_value, _ := strconv.Atoi(hyphen_splits[1])
+		start_value, err := strconv.Atoi(hyphen_splits[0])
+		if err != nil {
+			log.Fatalf("Сonversion error start_value: %v", err)
+		}
+
+		end_value, err := strconv.Atoi(hyphen_splits[1])
+		if err != nil {
+			log.Fatalf("Сonversion error end_value: %v", err)
+		}
 		for i := start_value; i <= end_value; i++ {
 			values = append(values, strconv.Itoa(i))
 		}
@@ -39,7 +47,10 @@ func parsePart(part string, start_value, max_value int) string {
 	if strings.Contains(part, "/") {
 		next_value := start_value
 		slash_value := strings.Split(part, "/")[1]
-		int_slash_value, _ := strconv.Atoi(slash_value)
+		int_slash_value, err := strconv.Atoi(slash_value)
+		if err != nil {
+			log.Fatalf("Сonversion error int_slash_value: %v", err)
+		}
 		for ; next_value <= max_value; next_value += int_slash_value {
 			values = append(values, strconv.Itoa(next_value))
 		}
